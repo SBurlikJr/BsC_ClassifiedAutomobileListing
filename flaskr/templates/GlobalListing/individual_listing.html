@@ -1,0 +1,118 @@
+{% extends "base.html" %}
+{% block title %}Home Page{% endblock %}
+{% block content %}
+
+{% if item.is_unlisted == True %}
+<div class="container-sm mb-5">
+            <div class="col-sm-12 mt-2 pt-2 pb-2 alert-danger rounded" role="alert">
+            <h2 class="h2">This listing is currently unlisted from the system.</h2>
+            </div>
+</div>
+{% endif %}
+
+
+{% if list_of_images %}
+<div class="container mt-5">
+    <!-- Preview -->
+    <div class="col-md-12 text-center bg-dark">
+        <figure class="figure mt-4">
+            <img src="{{ url_for('static', filename = ('images/user_listing_img/' + list_of_images[0].file_path)) }}" class="figure-img img-fluid rounded listing-card-img-top" id="expanded_img" alt="..." style="min-height: 300px; aspect-ratio: auto;">
+        </figure>
+    </div>
+    <!-- Thumbnails -->
+    <div class="d-flex justify-content-start mt-3 container-sm">
+    {% for image in list_of_images %}
+    <img src="{{ url_for('static', filename = ('images/user_listing_img/' + image.file_path)) }}" alt="No image found" type="image/webp" class="img-fluid me-2 mb-5 tab_image" onclick="showChosenImage(this)">
+    {% endfor %}
+    </div>
+</div>
+
+{% endif %}
+
+<div class="container-sm mb-5">
+    <div class="row">
+        <div class="col-sm-12">
+            <div class="card">
+                <div class="card-header bg-dark text-white">
+                    <h1>{{item.settings_l.models.makers.name}} {{item.settings_l.models.name}}</h1>
+                </div>
+                <div class="card-body">
+                    <ul class="list-group">
+                        <li class="list-group-item d-flex justify-content-between align-items-center">
+                            <p class="fs-3 fw-bold">Year</p>
+                            <p class="fs-3">{{ item.settings_l.year_of_issue }}</p>
+                        </li>
+                        <li class="list-group-item d-flex justify-content-between align-items-center">
+                            <p class="fs-3 fw-bold">Engine</p>
+                            <p class="fs-3">{{ item.settings_l.engine_capacity|round(1) }}L</p>
+                        </li>
+                        <li class="list-group-item d-flex justify-content-between align-items-center">
+                            <p class="fs-3 fw-bold">Body Type</p>
+                            <p class="fs-3">{{ item.settings_l.body_type }}</p>
+                        </li>
+                        <li class="list-group-item d-flex justify-content-between align-items-center">
+                            <p class="fs-3 fw-bold">Fuel Type</p>
+                            <p class="fs-3">{{ item.settings_l.fuel_type }}</p>
+                        </li>
+                        <li class="list-group-item d-flex justify-content-between align-items-center">
+                            <p class="fs-3 fw-bold">Drivetrain</p>
+                            <p class="fs-3">{{ item.settings_l.drivetrain }}</p>
+                        </li>
+                        <li class="list-group-item d-flex justify-content-between align-items-center">
+                            <p class="fs-3 fw-bold">Transmission</p>
+                            <p class="fs-3">{{ item.settings_l.transmission }}</p>
+                        </li>
+                        <li class="list-group-item d-flex justify-content-between align-items-center">
+                            <p class="fs-3 fw-bold">Mileage</p>
+                            <p class="fs-3">{{ item.settings_l.mileage }} km / {{ item.settings_l.mileage * 0.62 }} mil</p>
+                        </li>
+<!--                        <li class="list-group-item d-flex justify-content-between align-items-center">-->
+<!--                            <p class="fs-3 fw-bold">Registration Date</p>-->
+<!--                            <p class="fs-3">Lorem Ipsum</p>-->
+<!--                        </li>-->
+<!--                        <li class="list-group-item d-flex justify-content-between align-items-center">-->
+<!--                            <p class="fs-3 fw-bold">Inspection Date</p>-->
+<!--                            <p class="fs-3">Lorem Ipsum</p>-->
+<!--                        </li>-->
+
+                    </ul>
+                    <div class="container border border-2 rounded">
+                        <p class="fs-3 fw-bold">Description</p>
+                        <p class="fs-3"> {{ item.settings_l.description }}</p>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+        {% if session['role'] == 2 %}
+
+        <div class="col-sm-12 mt-5">
+            <div class="card">
+                <div class="card-header bg-dark text-white">
+                    <h2 class="h2">Moderation Tab</h2>
+                </div>
+                <div class="card-body bg-dark text-white">
+                    {% if item.is_unlisted == False %}
+                    <form action="{{ url_for('listing.flag', item_id = item.id) }}" method="POST">
+                        <button class="btn btn-warning pt-2 pb-2" type="submit">Flag</button>
+                    {% else %}
+                    <form action="{{ url_for('user.unflag', item_id = item.id) }}" method="POST">
+                        <button class="btn btn-warning pt-2 pb-2" type="submit">Unflag</button>
+                    {% endif %}
+                    </form>
+
+                </div>
+            </div>
+        </div>
+        {% endif %}
+    </div>
+</div>
+
+<script>
+    function showChosenImage(imgs) {
+        var expandImage = document.getElementById("expanded_img");
+        expandImage.src = imgs.src
+    }
+</script>
+
+{% endblock %}

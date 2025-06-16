@@ -1,0 +1,73 @@
+{% extends "base.html" %}
+{% block title %}Page{% endblock %}
+{% block content %}
+<div class="container-fluid justify-content-center">
+    <div class="ms-2 mt-4 row">
+        <div class="col-12">
+            <h1>Ask Assistant!</h1>
+        </div>
+        <div class="col-md-8">
+            <p>This is an artificial assistant that will recommend you any car based on your preference!</p>
+        </div>
+        <div class="col-md-8 mt-4 mb-4">
+            <h2>Chat</h2>
+            <div class="chat_box border-2" id="chat_box">
+                {% for message in history %}
+                <div class="message user_message">
+                    <strong>You:</strong> {{message.user}}
+                </div>
+                <div class="message ai_message">
+                     <strong>Assistant:</strong> {{message.bot}}
+                </div>
+                {% endfor %}
+
+            </div>
+            <form method="POST" name="chat_form" id="chat_form" action="">
+                <input type="text" class="user_input" name="user_input" id="user_input" placeholder="Enter your prompt">
+                <button type="submit" class="btn btn-secondary mt-2">Send</button>
+            </form>
+        </div>
+        <div class="col-6"></div>
+        <div class="col-sm-6 mt-4 mb-4">
+
+        </div>
+    </div>
+</div>
+
+
+<script>
+    $(document).ready(function () {
+        $('#chat_form').on('submit', function (e) {
+            e.preventDefault();
+
+            const userInput = $('input[name="user_input"]').val();
+            if (userInput.trim() === "") return;
+
+            // Send AJAX request to Flask
+            $.ajax({
+                url: '/chat',
+                method: 'POST',
+                data: { user_input: userInput },
+                datatype: 'json',
+                success: function(response) {
+
+                    $('#chat_box').append('<div class="message user_message"><strong>User:</strong> ' + response.user + '</div>');
+                    $('#chat_box').append('<div class="message ai_message"><strong>Bot:</strong> ' + response.bot + '</div>');
+
+                    // Clear input field
+                    $('input[name="user_input"]').val('');
+
+                    // Scroll to the bottom of the chat box
+                    $('#chat_box').scrollTop($('#chat_box')[0].scrollHeight);
+                },
+                error: function(xhr, status, error) {
+                    alert("Internal error has ocurred. Please try again.");
+                }
+            });
+        });
+    });
+</script>
+
+
+
+{% endblock %}

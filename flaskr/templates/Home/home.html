@@ -1,0 +1,9 @@
+{% extends "base.html" %}
+{% block title %}Home Page{% endblock %}
+{% block content %}
+<div class="container-fluid py-5">
+    <h1 class="display-5 fw-bold">Another Car Listing</h1>
+    <p class="col-md-8 fs-4">A car listing website with a gimmick. Browse ads and ask AI assistant for advice! </p>
+    <a href="{{ url_for('listing.listing') }}"><button class="btn btn-primary btn-lg" type="button">Browse cars</button></a>
+</div>
+{% endblock %}

@@ -1,0 +1,27 @@
+{% extends "base.html" %}
+{% block title %}Home Page{% endblock %}
+{% block content %}
+<h1>Profile</h1>
+<ul>
+    <li>
+        <h2><a>Hello, {{ user.email }}</a></h2>
+    </li>
+    <li>
+        <a href="{{ url_for('listing.create_listing') }}"><button class="btn btn-secondary m-3">Create a new list</button></a>
+    </li>
+    <li>
+        <a href="{{ url_for('user.user_listings') }}"><button class="btn btn-secondary m-3">User's Listings</button></a>
+    </li>
+    {% if session['role'] == 2 %}
+    <li>
+        <a href="{{ url_for('user.mod_listings') }}"><button class="btn btn-warning m-3">Flagged Listings</button></a>
+    </li>
+    {% endif %}
+    <li>
+        <a href="{{ url_for('user.info') }}"><button class="btn btn-secondary m-3">Info</button></a>
+    </li>
+    <li>
+        <a href="{{ url_for('auth.logout') }}"><button class="btn btn-secondary m-3">Log out</button></a>
+    </li>
+</ul>
+{% endblock %}

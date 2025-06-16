@@ -1,0 +1,202 @@
+{% extends "base.html" %}
+{% block title %}Home Page{% endblock %}
+{% block content %}
+<div class="page-header text-center mb-4 mt-5">
+    <h1 class="h3">Create a new listing</h1>
+</div>
+<div class="row">
+    <div class="col-md-12">
+        <div class="container d-flex justify-content-center align-items-center">
+            <form action="{{ url_for('listing.create_listing') }}" method="POST" enctype="multipart/form-data">
+                <div class="col-md-12 mb-1">
+                    <label for="image" class="form-label">Multiple files input example</label>
+                    <input class="form-control" type="file" accept="image/jpeg, image/png, image/webp" id="image" name="image" multiple required>
+                </div>
+                <div class="row">
+                    <div class="col-md-4 mb-1">
+                    <label class="form-label" for="maker">Maker</label>
+                    <select class="form-control" id="maker" name="maker" required>
+                        <option value="" selected>Select Maker</option>
+                        {% for maker in list_of_makers %}
+                        <option value="{{ maker.id }}">{{ maker.name }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+                <div class="col-md-4 mb-1">
+                    <label class="form-label">Model</label>
+                    <select class="form-control" id="model_select" name="model_select" required>
+                        <option value="" selected>Select Model</option>
+                    </select>
+                </div>
+                <div class="col-md-4 mb-1">
+                    <label class="form-label">Body Type</label>
+                    <select class="form-control" id="body_type" name="body_type" required>
+                        <option value="" selected>Select Body Type</option>
+                        <option value="Sedan">Sedan</option>
+                        <option value="Coupe">Coupe</option>
+                        <option value="Hatchback">Hatchback</option>
+                        <option value="Pickup">Pickup</option>
+                        <option value="Off-road">Off-road</option>
+                        <option value="Van">Van</option>
+                        <option value="Cabriolet">Cabriolet</option>
+                        <option value="SUV">SUV</option>
+                    </select>
+                </div>
+                    <div class="col-md-6 mb-1">
+                        <label class="form-label">Transmission</label>
+                        <select class="form-select" required id="transmission" name="transmission">
+                            <option value="" disabled selected>Choose your option</option>
+                            <option value="Manual">Manual</option>
+                            <option value="Automatic">Automatic</option>
+                        </select>
+                    </div>
+                    <div class="col-md-6 mb-1">
+                        <label class="form-label">Drivetrain</label>
+                        <select class="form-select" required id="drivetrain" name="drivetrain">
+                            <option value="" disabled selected>Choose your option</option>
+                            <option value="FWD">FWD</option>
+                            <option value="RWD">RWD</option>
+                            <option value="AWD">4WD/AWD</option>
+                        </select>
+                    </div>
+                    <div class="col-md-4 mb-1">
+                        <label class="form-label">Engine Capacity</label>
+                        <input class="form-control" type="number" min="0.1" max="16.0" step="0.1" value="1.0" id="engine_capacity" name="engine_capacity">
+                    </div>
+                    <div class="col-md-4 mb-1">
+                        <label class="form-label">Mileage</label>
+                        <input class="form-control" type="number" id="mileage" name="mileage">
+                    </div>
+                    <div class="col-md-4 mb-1">
+                        <label class="form-label">Price</label>
+                        <input class="form-control" type="number" id="price" name="price">
+                    </div>
+                    <div class="col-md-6 mb-1">
+                        <label class="form-label">Fuel Type</label>
+                        <select class="form-select" required id="fuel_type" name="fuel_type">
+                            <option value="" disabled selected>Choose your option</option>
+                            <option value="Gasoline">Gasoline</option>
+                            <option value="Natural Gas">Natural Gas</option>
+                            <option value="Gasoline/Natural Gas">Natural Gas/Gasoline</option>
+                            <option value="Diesel">Diesel</option>
+                            <option value="Hybrid">Hybrid</option>
+                            <option value="Electric">Electric</option>
+                        </select>
+                    </div>
+                    <div class="col-md-6 mb-1">
+                        <label class="form-label">Year of Issue</label>
+                        <input class="form-control" type="number" min="1900" max="2025" step="1" id="year_of_issue" name="year_of_issue">
+                    </div>
+                    <div class="col-md-4 mb-1">
+                        <label class="form-label">Length</label>
+                        <input class="form-control" type="number" id="length" name="length">
+                    </div>
+                    <div class="col-md-4 mb-1">
+                        <label class="form-label">Width</label>
+                        <input class="form-control" type="number" id="width" name="width">
+                    </div>
+                    <div class="col-md-4 mb-1">
+                        <label class="form-label">Height</label>
+                        <input class="form-control" type="number" id="height" name="height">
+                    </div>
+                </div>
+
+                <div class="row">
+                    <h6 class="h6 col-md-12">Registration</h6>
+                    <div class="col-sm-6 mb-3">
+                        <input class="form-check-radio" type="checkbox" id="chck_registration" name="chck_registration">
+                        <label class="form-label">Is it registered?</label>
+                    </div>
+                    <div class="col-sm-4 mb-3">
+                        <input class="form-control" type="date" id="registration_date" name="registration_date" style="display: none">
+                    </div>
+                    <h6 class="h6 col-md-12">Inspection</h6>
+                    <div class="col-sm-6 mb-3">
+                        <input class="form-check-radio" type="checkbox" id="chck_inspection" name="chck_inspection">
+                        <label class="form-label">Does it have inspection?</label>
+                    </div>
+                    <div class="col-sm-4 mb-3">
+                        <input class="form-control" type="date" id="inspection_date" name="inspection_date" style="display: none; transition: opacity 200ms">
+                    </div>
+                    <div class="col-md-12 mb-3">
+                        <label class="form-label">Location, City</label>
+                        <select required id="location_city" name="location_city" class="form-control">
+                            <option value="" disabled selected>Choose your option</option>
+                            {% for city in list_of_cities %}
+                            <option value="{{ city.name }}">{{ city.name }}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                    <div class="col-md-12 mb-3">
+                        <label class="form-label" for="description">Description</label>
+                        <textarea class="form-control mb-2" id="description" name="description" rows="8" maxlength="2048"></textarea>
+                    </div>
+                </div>
+                <button type="submit" class="btn btn-primary">Submit</button>
+            </form>
+        </div>
+    </div>
+</div>
+
+<script>
+    const checkbox_registration = document.getElementById('chck_registration');
+    const checkbox_inspection = document.getElementById('chck_inspection');
+    const input_registration = document.getElementById('registration_date');
+    const input_inspection = document.getElementById('inspection_date');
+
+    checkbox_registration.addEventListener('change', function() {
+        if (checkbox_registration.checked) {
+            input_registration.style.display = 'block';
+        }
+        else {
+            input_registration.style.display = 'none';
+        }
+    })
+
+    checkbox_inspection.addEventListener('change', function() {
+        if (checkbox_inspection.checked) {
+            input_inspection.style.display = 'block';
+        }
+        else {
+            input_inspection.style.display = 'none';
+        }
+    })
+
+        document.getElementById('maker').addEventListener('change', function() {
+            const maker = this.value;
+            console.log(maker);
+            if (maker) {
+                fetchCarModels(maker);
+            } else {
+                document.getElementById('model').innerHTML = '';
+            }
+        });
+
+
+        async function fetchCarModels(maker) {
+        const modelSelect = document.getElementById('model_select');
+        modelSelect.innerHTML = '<option value="">Select model</option>';
+
+        if (maker) {
+            try {
+                const response = await fetch(`/lists/get_models/${maker}`);
+
+                if (!response.ok) {
+                    throw new Error(response.statusText);
+                }
+                const models = await response.json();
+
+                models.forEach((model) => {
+                    const option = document.createElement('option');
+                    option.setAttribute('value', model.id);
+                    option.textContent = model.name;
+                    modelSelect.appendChild(option);
+                });
+            } catch (error) {
+                console.error('Error fetching models: ', error);
+            }
+        }
+    }
+</script>
+
+{% endblock %}

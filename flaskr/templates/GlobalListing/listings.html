@@ -1,0 +1,219 @@
+{% extends "base.html" %}
+{% block title %}Home Page{% endblock %}
+{% block content %}
+<div class="container-fluid mt-4">
+    <div class="row">
+        <!-- FILTERS -->
+        <div class="col-md-3">
+            <form action="{{ url_for('listing.listing') }}" method="GET">
+                <div class="col-1">
+                    <h1 class="text-left">Filters</h1>
+                </div>
+                <div class="col-md-12 mt-4">
+                    <h4 class="h4">Maker</h4>
+                    <select class="form-select" id="maker" name="maker">
+                        <option selected></option>
+                        {% for maker in list_of_makers %}
+                        <option value="{{ maker.id }}">{{ maker.name }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+                <div class="col-md-12 mt-4">
+                    <h4 class="h4">Model</h4>
+                    <select class="form-select" id="model_select" name="model_select">
+                      <option value="" selected></option>
+                    </select>
+                </div>
+                <div class="col-md-12 mt-4">
+                    <h4 class="h4">Body Type</h4>
+                    <select class="form-select" id="body_type" name="body_type">
+                        <option value="" selected></option>
+                        <option value="Sedan">Sedan</option>
+                        <option value="Coupe">Coupe</option>
+                        <option value="Hatchback">Hatchback</option>
+                        <option value="Pickup">Pickup</option>
+                        <option value="Off-road">Off-road</option>
+                        <option value="Van">Van</option>
+                        <option value="Cabriolet">Cabriolet</option>
+                        <option value="SUV">SUV</option>
+                    </select>
+                </div>
+                <div class="col-md-12 mt-4">
+                    <h4 class="h4">Transmission type</h4>
+                    <select class="form-select" id="transmission" name="transmission">
+                        <option selected></option>
+                        <option value="Manual">Manual</option>
+                        <option value="Automatic">Automatic</option>
+                    </select>
+                </div>
+                <div class="col-md-12 mt-4">
+                    <h4 class="h4">Fuel type</h4>
+                    <select class="form-select" id="fuel_type" name="fuel_type">
+                        <option selected></option>
+                        <option value="Gasoline">Gasoline</option>
+                        <option value="Natural Gas">Natural Gas</option>
+                        <option value="Gasoline/Natural Gas">Natural Gas/Gasoline</option>
+                        <option value="Diesel">Diesel</option>
+                        <option value="Hybrid">Hybrid</option>
+                        <option value="Electric">Electric</option>
+                    </select>
+                </div>
+                <div class="col-md-12 mt-4">
+                    <h4 class="h4">Drivetrain</h4>
+                    <select class="form-select" id="drivetrain" name="drivetrain">
+                        <option selected></option>
+                        <option value="FWD">FWD</option>
+                        <option value="RWD">RWD</option>
+                        <option value="AWD">4WD/AWD</option>
+                    </select>
+                </div>
+                <div class="row mt-2">
+                    <h4 class="h4">Year</h4>
+                    <div class="col-md-6 mt-2">
+                        <input type="text" class="col-form-label-sm form-control form-control-alternative" placeholder="from" id="year_from" name="year_from">
+                    </div>
+                    <div class="col-md-6 mt-2">
+                        <input type="text" class="col-form-label-sm form-control form-control-alternative" placeholder="to" id="year_to" name="year_to">
+                    </div>
+                </div>
+                <div class="row mt-2">
+                    <h4 class="h4"> Price Tag</h4>
+                    <div class="col-md-6 mt-2">
+                        <input type="text" class="col-form-label-sm form-control form-control-alternative" placeholder="from" id="price_from" name="price_from">
+                    </div>
+                    <div class="col-md-6 mt-2">
+                        <input type="text" class="col-form-label-sm form-control form-control-alternative" placeholder="to" id="price_to" name="price_to">
+                    </div>
+                </div>
+                <div class="row mt-2">
+                    <h4 class="h4">Mileage</h4>
+                    <div class="col-md-6 mt-2">
+                        <input type="text" class="col-form-label-sm form-control form-control-alternative" placeholder="from" id="mileage_from" name="mileage_from">
+                    </div>
+                    <div class="col-md-6 mt-2">
+                        <input type="text" class="col-form-label-sm form-control form-control-alternative" placeholder="to" id="mileage_to" name="mileage_to">
+                    </div>
+                </div>
+                <div class="row mt-2">
+                    <div class="col-md-6 mt-2">
+                        <button type="submit" class="btn btn-primary" value="submit">Update</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+
+        <!-- LISTINGS -->
+        <div class="col-md-9">
+            <div class="row">
+            {% for listing in list_of_items %}
+                <div class="col-md-6 mt-4">
+                    <div class="card mb-0">
+                        <div class="card-img-top" id="listing-card-img-top">
+                            <img class="img-fluid" src="{{ url_for('static', filename = ('images/user_listing_img/' + listing.preview_image_path)) }}" role="img" aria-label="Placehodler: Image preview" alt="no image">
+                        </div>
+
+                        <h4 class="h4 ms-2 mt-2">{{ listing.settings_l.year_of_issue }} {{ listing.settings_l.models.makers.name }} {{ listing.settings_l.models.name }}</h4>
+                        <div class="col-md-12 mt-2 list-group">
+                            <div class="list-group-item d-flex justify-content-between align-items-center">
+                                <img src="{{ url_for('static', filename='images/listing_icons/engine_icon.png')}}", type="image/png", alt="No img" class="img-thumbnail listing-icon">
+                                <h5 class="h5">{{ listing.settings_l.engine_capacity|round(1) }} L</h5>
+                            </div>
+                            <div class="list-group-item d-flex justify-content-between align-items-center">
+                                <img src="{{ url_for('static', filename='images/listing_icons/gas_icon.png')}}", type="image/png", alt="No img" class="img-thumbnail listing-icon">
+                                <h5 class="h5">{{ listing.settings_l.fuel_type }}</h5>
+                            </div>
+                            <div class="list-group-item d-flex justify-content-between align-items-center">
+                                <img src="{{ url_for('static', filename='images/listing_icons/transmission_icon.png')}}", type="image/png", alt="No img" class="img-thumbnail listing-icon">
+                                <h5 class="h5">{{ listing.settings_l.transmission }}</h5>
+                            </div>
+                            <div class="list-group-item d-flex justify-content-between align-items-center">
+                                <img src="{{ url_for('static', filename='images/listing_icons/drivetrain_icon.png')}}", type="image/png", alt="No img" class="img-thumbnail listing-icon">
+                                <h5 class="h5">{{ listing.settings_l.drivetrain }}</h5>
+                            </div>
+                            <div class="list-group-item d-flex justify-content-between align-items-center">
+                                <img src="{{ url_for('static', filename='images/listing_icons/mileage_icon.png')}}", type="image/png", alt="No img" class="img-thumbnail listing-icon">
+                                <h5 class="h5">{{ listing.settings_l.mileage }}</h5>
+                            </div>
+                        </div>
+                        <div class="card-footer d-flex justify-content-between">
+                            <a href="{{ url_for('listing.individual_listing', item_id = listing.id) }}">
+                                <button class="btn btn-outline-primary">View</button>
+                            </a>
+                            <h5 class="h5 pt-2 align-end">{{ listing.settings_l.price|int }}€</h5>
+                        </div>
+                    </div>
+                </div>
+
+            {% endfor %}
+                {% if list_of_items %}
+                <div class="btn-toolbar justify-content-center mt-4 mb-4" role="toolbar">
+                    <div class="btn-group " role="group" aria-label="First Group">
+                        {% if page > 1 %}
+                        <a href="{{ url_for('listing.listing', page=1) }}"><button class="btn btn-outline-secondary"> << </button></a>
+                        {% endif %}
+                    </div>
+                    <div class="btn-group me-2" role="group" aria-label="Second Group">
+                        {% if page - 1 != 0 %}
+                        <a href="{{ url_for('listing.listing', page=page-1) }}"><button type="button" class="btn btn-outline-secondary">{{ page - 1 }}</button></a>
+                        {% endif %}
+                        <button type="button" class="btn btn-primary">{{ page }}</button>
+                        {% if page + 1 <= total_pages %}
+                        <a href="{{ url_for('listing.listing', page=page+1) }}"><button type="button" class="btn btn-outline-secondary">{{ page + 1 }}</button></a>
+                        {% endif %}
+                        {% if page + 2 < total_pages %}
+                        <a href="{{ url_for('listing.listing', page=page+2) }}"><button type="button" class="btn btn-outline-secondary">{{ page + 2 }}</button></a>
+                        {% endif %}
+                    </div>
+                        {% if page < total_pages %}
+                        <a href="{{ url_for('listing.listing', page=total_pages) }}"><button type="button" class="btn btn-outline-secondary"> >> </button></a>
+                        {% endif %}
+                </div>
+                {% else %}
+                <div class="alert alert-warning" role="alert"> No listings found</div>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    document.getElementById('maker').addEventListener('change', function() {
+            const maker = this.value;
+            console.log(maker);
+            if (maker) {
+                fetchCarModels(maker);
+            } else {
+                document.getElementById('model').innerHTML = '';
+            }
+        });
+
+
+        async function fetchCarModels(maker) {
+        const modelSelect = document.getElementById('model_select');
+        modelSelect.innerHTML = '<option></option>';
+
+        if (maker) {
+            try {
+                const response = await fetch(`/lists/get_models/${maker}`);
+
+                if (!response.ok) {
+                    throw new Error(response.statusText);
+                }
+                const models = await response.json();
+
+                models.forEach((model) => {
+                    const option = document.createElement('option');
+                    option.setAttribute('value', model.id);
+                    option.textContent = model.name;
+                    modelSelect.appendChild(option);
+                });
+            } catch (error) {
+                console.error('Error fetching models: ', error);
+            }
+        }
+    }
+</script>
+
+
+
+{% endblock %}

@@ -1,0 +1,31 @@
+{% extends "base.html" %}
+{% block title %}Home Page{% endblock %}
+{% block content %}
+<div class="container-fluid d-flex justify-content-center align-items-center">
+  <div class="row">
+    <div class="col-sm-12 text-center">
+      <h1 class="h1 mb-5 mt-5">Login</h1>
+    </div>
+    <div class="col-sm-12">
+      <form action="{{ url_for('auth.login') }}" method="POST">
+        <div class="mb-3">
+          <label for="email" class="form-label">Email address</label>
+          <input type="email" class="form-control" id="email" name="email" aria-describedby="emailHelp">
+          <div id="emailHelp" class="form-text">We'll never share your email with anyone else.</div>
+        </div>
+        <div class="mb-3">
+          <label for="password" class="form-label">Password</label>
+          <input type="password" class="form-control" id="password" name="password">
+        </div>
+        <button type="submit" class="btn btn-primary">Submit</button>
+        <div><a href="/signup">Don't have an account? Create here</a></div>
+      </form>
+    </div>
+    {% if error_message %}
+    <div class="col-sm-12 mt-2 pt-2 pb-2 alert-danger rounded" role="alert">
+    {{ error_message }}
+    </div>
+    {% endif %}
+  </div>
+</div>
+{% endblock %}

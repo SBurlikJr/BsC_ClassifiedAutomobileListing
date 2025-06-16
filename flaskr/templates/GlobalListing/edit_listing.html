@@ -1,0 +1,137 @@
+{% extends "base.html" %}
+{% block title %}Home Page{% endblock %}
+{% block content %}
+<h1>Creating a new listing</h1>
+<div class="row">
+    <div class="col-md-12">
+        <div class="container d-flex justify-content-center align-items-center">
+            <form action="{{ url_for('listing.create_listing') }}" method="POST" enctype="multipart/form-data">
+                <div class="col-md-12 mb-1">
+                    <label for="image" class="form-label">Multiple files input example</label>
+                    <input class="form-control" type="file" accept="image/jpeg, image/png, image/webp" id="image" name="image" multiple>
+                </div>
+                <div class="row">
+                    <div class="col-md-4 mb-1">
+                    <label class="form-label" for="maker">Maker</label>
+                    <select class="form-control" id="maker" name="maker" disabled >
+                        <option value="{{ listing.settings_l.models.makers.name }}" selected disabled>{{ listing.settings_l.models.makers.name }}</option>
+                    </select>
+                </div>
+                <div class="col-md-4 mb-1">
+                    <label class="form-label">Model</label>
+                    <select class="form-control" id="model_select" name="model_select" disabled>
+                        <option value="{{ listing.settings_l.models.name }}" selected disabled>{{ listing.settings_l.models.name }}</option>
+                    </select>
+                </div>
+                <div class="col-md-4 mb-1">
+                    <label class="form-label">Body Type</label>
+                    <select class="form-control" id="body_type" name="body_type" required>
+                        <option value="" disabled>Select Body Type</option>
+                        <option value="Sedan" {% if body_type_choice == 'Sedan' %}selected{% endif %} >Sedan</option>
+                        <option value="Coupe" {% if body_type_choice == 'Coupe' %}selected{% endif %}>Coupe</option>
+                        <option value="Hatchback" {% if body_type_choice == 'Hatchback' %}selected{% endif %}>Hatchback</option>
+                        <option value="Pickup" {% if body_type_choice == 'Pickup' %}selected{% endif %}>Pickup</option>
+                        <option value="Off-road" {% if body_type_choice == 'Off-road' %}selected{% endif %}>Off-road</option>
+                        <option value="Van" {% if body_type_choice == 'Van' %}selected{% endif %}>Van</option>
+                        <option value="Cabriolet" {% if body_type_choice == 'Cabriolet' %}selected{% endif %}>Cabriolet</option>
+                        <option value="SUV" {% if body_type_choice == 'SUV' %}selected{% endif %}>SUV</option>
+                    </select>
+                </div>
+                <div class="row">
+                    <div class="col-md-6 mb-1">
+                        <label class="form-label">Transmission</label>
+                        <select class="form-select" required id="transmission" name="transmission">
+                            <option value="" disabled>Choose your option</option>
+                            <option value="Manual" {% if transmission_choice == 'Manual' %}selected{% endif %}>Manual</option>
+                            <option value="Automatic" {% if transmission_choice == 'Automatic' %}selected{% endif %}>Automatic</option>
+                        </select>
+                    </div>
+                    <div class="col-md-6 mb-1">
+                        <label class="form-label">Drivetrain</label>
+                        <select class="form-select" required id="drivetrain" name="drivetrain">
+                            <option value="" disabled>Choose your option</option>
+                            <option value="FWD"{% if drivetrain_choice == 'FWD' %}selected{% endif %}>FWD</option>
+                            <option value="RWD" {% if drivetrain_choice == 'RWD' %}selected{% endif %}>RWD</option>
+                            <option value="AWD" {% if drivetrain_choice == 'AWD' %}selected{% endif %}>4WD/AWD</option>
+                        </select>
+                    </div>
+                    <div class="col-md-4 mb-1">
+                        <label class="form-label">Engine Capacity</label>
+                        <input class="form-control" type="number" min="0.1" max="16.0" step="0.1" value="{{ listing.settings_l.engine_capacity | round(1) }}" id="engine_capacity" name="engine_capacity">
+                    </div>
+                    <div class="col-md-4 mb-1">
+                        <label class="form-label">Mileage</label>
+                        <input class="form-control" type="number" value="{{ listing.settings_l.mileage }}" id="mileage" name="mileage">
+                    </div>
+                    <div class="col-md-4 mb-1">
+                        <label class="form-label">Price</label>
+                        <input class="form-control" type="number" value="{{ listing.settings_l.price | int }}" id="price" name="price">
+                    </div>
+                    <div class="col-md-6 mb-1">
+                        <label class="form-label">Fuel Type</label>
+                        <select class="form-select" required id="fuel_type" name="fuel_type">
+                            <option value="" disabled selected>Choose your option</option>
+                            <option value="Gasoline" {% if fuel_type_choice == 'Gasoline' %}selected{% endif %}>Gasoline</option>
+                            <option value="Natural Gas" {% if fuel_type_choice == 'Natural Gas' %}selected{% endif %}>Natural Gas</option>
+                            <option value="Gasoline/Natural Gas" {% if fuel_type_choice == 'Gasoline/Natural Gas' %}selected{% endif %}>Natural Gas/Gasoline</option>
+                            <option value="Diesel" {% if fuel_type_choice == 'Diesel' %}selected{% endif %}>Diesel</option>
+                            <option value="Hybrid" {% if fuel_type_choice == 'Hybrid' %}selected{% endif %}>Hybrid</option>
+                            <option value="Electric" {% if fuel_type_choice == 'Electric' %}selected{% endif %}>Electric</option>
+                        </select>
+                    </div>
+                    <div class="col-md-6 mb-1">
+                        <label class="form-label">Year of Issue</label>
+                        <input class="form-control" type="number" min="1900" max="2025" step="1" value="{{listing.settings_l.year_of_issue}}" id="year_of_issue" name="year_of_issue">
+                    </div>
+                    <div class="col-md-4 mb-1">
+                        <label class="form-label">Length</label>
+                        <input class="form-control" type="number" id="length" name="length" value="{{listing.settings_l.length | int}}">
+                    </div>
+                    <div class="col-md-4 mb-1">
+                        <label class="form-label">Width</label>
+                        <input class="form-control" type="number" id="width" name="width" value="{{listing.settings_l.width | int}}">
+                    </div>
+                    <div class="col-md-4 mb-1">
+                        <label class="form-label">Height</label>
+                        <input class="form-control" type="number" id="height" name="height" value="{{listing.settings_l.height | int}}">
+                    </div>
+                </div>
+
+                <div class="row">
+                    <h6 class="h6 col-md-12">Registration</h6>
+                    <div class="col-sm-6 mb-3">
+                        <input class="form-check-radio" type="checkbox" id="chck_registration" name="chck_registration">
+                        <label class="form-label">Is it registered?</label>
+                    </div>
+                    <div class="col-sm-4 mb-3">
+                        <input class="form-control" type="date" id="registration_date" name="registration_date" style="display: none">
+                    </div>
+                    <h6 class="h6 col-md-12">Inspection</h6>
+                    <div class="col-sm-6 mb-3">
+                        <input class="form-check-radio" type="checkbox" id="chck_inspection" name="chck_inspection">
+                        <label class="form-label">Does it have inspection?</label>
+                    </div>
+                    <div class="col-sm-4 mb-3">
+                        <input class="form-control" type="date" id="inspection_date" name="inspection_date" style="display: none; transition: opacity 200ms">
+                    </div>
+                    <div class="col-md-12 mb-3">
+                        <label class="form-label">Location, City</label>
+                        <select required id="location_city" name="location_city" class="form-control">
+                            <option value="" disabled>Choose your option</option>
+                            {% for city in list_of_cities %}
+                            <option value="{{ city.name }}" {% if city_choice == city.name %}selected{% endif %}>{{ city.name }}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                    <div class="col-md-12 mb-3">
+                        <label class="form-label" for="description">Description</label>
+                        <textarea class="form-control mb-2" id="description" name="description" rows="8" maxlength="2048" value="{{ listing.settings_l.description }}"></textarea>
+                    </div>
+                </div>
+                <button type="submit" class="btn btn-primary">Submit</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+{% endblock %}

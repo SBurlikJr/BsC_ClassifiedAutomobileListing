@@ -1,0 +1,35 @@
+{% extends "base.html" %}
+{% block title %}Home Page{% endblock %}
+{% block content %}
+
+<div class="container-fluid d-flex justify-content-center align-items-center">
+  <div class="row">
+    <div class="col-sm-12 text-center">
+      <h1 class="h1 mb-5 mt-5">Update Credentials</h1>
+    </div>
+    <div class="col-sm-12">
+      <form action="{{ url_for('user.info') }}" method="POST">
+        <div class="mb-3">
+          <label for="phone_number" class="form-label">Phone number</label>
+          <input type="number" class="form-control" id="phone_number" name="phone_number">
+        </div>
+          <div class="mb-3">
+          <label for="current_password" class="form-label">Current Password</label>
+          <input type="password" class="form-control" id="current_password" name="current_password">
+        </div>
+          <div class="mb-3">
+          <label for="new_password" class="form-label">New Password</label>
+          <input type="password" class="form-control" id="new_password" name="new_password">
+        </div>
+        <button type="submit" class="btn btn-primary">Submit</button>
+      </form>
+    </div>
+    {% if error_message %}
+    <div class="col-sm-12 mt-2 pt-2 pb-2 alert-danger rounded" role="alert">
+    {{ error_message }}
+    </div>
+    {% endif %}
+  </div>
+</div>
+
+{% endblock %}

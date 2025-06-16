@@ -1,0 +1,77 @@
+body
+  background: #fcfcfc
+
+li
+  list-style-type: none
+  padding-left: 0
+  font-size: 12px
+  text-align: left
+
+.listing-icon
+  height: 32px
+
+.tab_image
+  opacity: 0.6
+  width: 80px
+  height: 60px
+  crop: auto
+  &:hover
+    transition-duration: 0.2s
+    opacity: 1
+    cursor: pointer
+  &:active
+    opacity: 1
+
+.chat_box
+  height: 300px
+  overflow-y: auto
+  border: 1px solid #ddd
+  padding: 10px
+  margin-bottom: 10px
+
+
+.message
+  margin: 10px 0
+
+.user_message
+  color: blue
+
+.ai_message
+  color: green
+
+#listing-card-img-top
+  background-color: #cccccc
+  width: 100%
+  aspect-ratio: 4 / 3
+  max-height: 400px
+
+#listing-preview-image
+  width: 100%
+  height: 100%
+  fill: #cacaca
+
+#listing-title
+  padding: 10px 0px 10px 10px
+  text-align: left
+  font-size: 18px
+
+#listing-condition
+  text-align: right
+  font-size: 16px
+  padding-right: 10px
+
+#listing-location
+  text-align: left
+
+#listing-price
+  text-align: right
+
+#create-listing-date-anim
+  display: none
+  opacity: 0
+  transition: 0.3s
+
+#create-listing-date-anim.hidden
+  display: block
+  opacity: 1
+  transition: 0.3s
